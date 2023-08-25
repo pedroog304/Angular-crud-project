@@ -5,16 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
+import { ProductoComponent } from './producto/producto.component';
+import { HttpClientModule } from '@angular/common/http';
+import { PanelModule } from 'primeng/panel';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ProductoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    TableModule
+    TableModule,
+    HttpClientModule,
+    PanelModule
   ],
   providers: [],
   bootstrap: [AppComponent]
