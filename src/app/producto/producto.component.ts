@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Producto } from 'src/model/producto';
 import { ProductoService } from '../service/producto.service';
 import { MenuItem } from 'primeng/api/menuitem';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-producto',
@@ -29,7 +30,7 @@ export class ProductoComponent implements OnInit{
          fecha_baja:""
   }
 
-  constructor(private productoService: ProductoService){
+  constructor(private productoService: ProductoService, private messageService: MessageService, private confirmService: ConfirmationService){
 
   }
   getAll() {
@@ -51,6 +52,9 @@ export class ProductoComponent implements OnInit{
   save(){
     this.productoService.save(this.producto).subscribe(
       (result: any) => {
+        let producto =result as Producto
+        this.productos.push(producto);
+        this.messageService.add({severity: 'success', summary: "Resultado", detail:"Se guardó correctamente"})
         console.log(result);
         this.displaySaveDialog = false;
 
