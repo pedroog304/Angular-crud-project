@@ -10,6 +10,8 @@ import { ProductoService } from '../service/producto.service';
 export class ProductoComponent implements OnInit{
 
   productos: Producto[] = [];
+  cols: any[]= [];
+  item:MenuItem[]=[];
 
   constructor(private productoService: ProductoService){
 
@@ -31,6 +33,12 @@ export class ProductoComponent implements OnInit{
   }
   ngOnInit(): void {
       this.getAll();
+      this.cols = [
+        { field: "sku", header: "SKU" },
+        { field: "articulo", header: "Nombre" },
+        { field: "marca", header: "Marca" }
+      ];
+      
   }
   
 }

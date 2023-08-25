@@ -1,16 +1,20 @@
-<p-table [value]="productos">
-            <ng-template pTemplate="header">
+<div class="ui-g">
+<p-panel header="Administración de Productos" [style]="{width: '70%', margin: '0 auto'}">
+<p-table [value]="productos" [columns]="cols" [paginator]="true" [rows]="15">
+            <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th>SKU</th>
-                    <th>Articulo</th>
-                    <th>Marca</th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                    </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-producto>
-                <tr>
-                    <td> {{producto.sku}}</td>
-                    <td> {{producto.articulo}}</td>
-                    <td> {{producto.marca}}</td>
+            <ng-template pTemplate="body" let-producto let-columns="columns">
+                <tr [pSelectableRow]="producto">
+                    <td *ngFor="let col of columns">
+                        {{producto[col.field]}}
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
+    </p-panel>
+</div>
