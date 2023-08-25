@@ -13,6 +13,21 @@ export class ProductoComponent implements OnInit{
   productos: Producto[] = [];
   cols: any[]= [];
   items: MenuItem[]=[];
+  displaySaveDialog: boolean =false;
+  producto: Producto={
+    sku:0, 
+         articulo:"", 
+         marca:"", 
+         modelo:"", 
+         departamento: 0,
+         clase:0,
+         familia:0, 
+         fecha_alta:"01-01-2023", 
+         stock:0, 
+         cantidad:0, 
+         descontinuado:0, 
+         fecha_baja:""
+  }
 
   constructor(private productoService: ProductoService){
 
@@ -26,6 +41,19 @@ export class ProductoComponent implements OnInit{
           productos.push(producto);
         }
         this.productos = productos;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  save(){
+    this.productoService.save(this.producto).subscribe(
+      (result: any) => {
+        console.log(result);
+        this.displaySaveDialog = false;
+
       },
       error => {
         console.log(error);
@@ -56,6 +84,7 @@ export class ProductoComponent implements OnInit{
       ];
   }
   showSaveDialog(editar: boolean) {
+    this.displaySaveDialog= true;
   }
   
 }

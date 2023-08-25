@@ -20,4 +20,86 @@
             </ng-template>
         </p-table>
     </p-panel>
+    <p-dialog  header="Producto" [responsive]="true" [style]="{width: '400px'}" [(visible)]="displaySaveDialog"
+    [modal]="true">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="sku">SKU</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="sku" [(ngModel)]="producto.sku" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="articulo">Articulo</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="articulo" [(ngModel)]="producto.articulo" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="marca">Marca</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="marca" [(ngModel)]="producto.marca" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="modelo">Modelo</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="modelo" [(ngModel)]="producto.modelo" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="departamento">Departamento</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="departamento" [(ngModel)]="producto.departamento" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="clase">Clase</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="clase" [(ngModel)]="producto.clase" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="familia">Familia</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="familia" [(ngModel)]="producto.familia" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="stock">Stock</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="stock" [(ngModel)]="producto.stock" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="cantidad">Cantidad</label>
+            </div>
+            <div class="ui-g-8">
+                <input pInputText id="cantidad" [(ngModel)]="producto.cantidad" />
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar"></button>
+        </div>
+    </p-footer>
+    </p-dialog>
 </div>
