@@ -19,4 +19,7 @@ export class ProductoService {
     headers = headers.set('Content-Type', 'application/json');
     return this.http.post(this.baseUrl +"/save", JSON.stringify(producto), {headers: headers});
   }
+  delete(id: number) : Observable<any>{
+    return this.http.get(this.baseUrl + "/delete/"+id);
+  }
 }

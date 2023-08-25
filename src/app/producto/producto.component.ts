@@ -79,6 +79,29 @@ export class ProductoComponent implements OnInit{
       }
     );
   }
+
+  delete(){
+    if(this.selectedProducto == null || this.selectedProducto.sku == 0){
+      this.messageService.add({severity : 'warn', summary: "Advertencia!", detail: "Por favor seleccione un registro"});
+      return;
+    }
+    this.confirmService.confirm({
+      message: "¿Está seguro que desea eliminar el registro?",
+      accept : () =>{
+        this.productoService.delete(this.selectedProducto.sku).subscribe(
+          (result:any) =>{
+            this.messageService.add({ severity: 'success', summary: "Resultado", detail: "Se eliminó el producto con sku "+result.sku+" correctamente." });
+            this.deleteObject(result.sku);
+          }
+        )
+      }
+    })
+  }
+  deleteObject(sku: number) {
+    // Eliminar el registro del array
+    this.productos = this.productos.filter(producto => producto.sku !== sku);
+ }
+ 
   ngOnInit(): void {
       this.getAll();
       this.cols = [
@@ -99,7 +122,8 @@ export class ProductoComponent implements OnInit{
         },
         {
           label: "Eliminar", 
-          icon: "pi pi-fw pi-times"
+          icon: "pi pi-fw pi-times",
+          command: () => this.delete()
         }
       ];
   }
@@ -118,12 +142,12 @@ export class ProductoComponent implements OnInit{
   }
   validarProducto(producto: Producto){
     let index = this.productos.findIndex((e) => e.sku == producto.sku);
-
+    let productos = this.productos;
     if(index != -1){
-      this.productos[index] = producto;
+      productos[index] = producto;
     }else{
-      this.productos.push(producto);
-
+      productos.push(producto);
+      this.productos = productos;
     }
 
   }
