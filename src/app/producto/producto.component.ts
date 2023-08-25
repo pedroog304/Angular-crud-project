@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Producto } from 'src/model/producto';
 import { ProductoService } from '../service/producto.service';
+import { MenuItem } from 'primeng/api/menuitem';
 
 @Component({
   selector: 'app-producto',
@@ -11,7 +12,7 @@ export class ProductoComponent implements OnInit{
 
   productos: Producto[] = [];
   cols: any[]= [];
-  item:MenuItem[]=[];
+  items: MenuItem[]=[];
 
   constructor(private productoService: ProductoService){
 
@@ -38,7 +39,23 @@ export class ProductoComponent implements OnInit{
         { field: "articulo", header: "Nombre" },
         { field: "marca", header: "Marca" }
       ];
-      
+      this.items = [
+        {
+          label: "Nuevo",
+          icon: 'pi pi-fw pi-plus',
+          command: () => this.showSaveDialog(false)
+        },
+        {
+          label: "Editar",
+          icon: "pi pi-fw pi-pencil"
+        },
+        {
+          label: "Eliminar", 
+          icon: "pi pi-fw pi-times"
+        }
+      ];
+  }
+  showSaveDialog(editar: boolean) {
   }
   
 }

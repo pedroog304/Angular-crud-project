@@ -1,5 +1,8 @@
 <div class="ui-g">
 <p-panel header="Administración de Productos" [style]="{width: '70%', margin: '0 auto'}">
+    <div style="margin-bottom: 20px">
+        <p-menubar [model]="items"></p-menubar>
+    </div>
 <p-table [value]="productos" [columns]="cols" [paginator]="true" [rows]="15">
             <ng-template pTemplate="header" let-columns>
                 <tr>
