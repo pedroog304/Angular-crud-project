@@ -29,6 +29,20 @@ export class ProductoComponent implements OnInit{
          descontinuado:0, 
          fecha_baja:""
   }
+  selectedProducto: Producto={
+    sku:0, 
+         articulo:"", 
+         marca:"", 
+         modelo:"", 
+         departamento: 0,
+         clase:0,
+         familia:0, 
+         fecha_alta:"01-01-2023", 
+         stock:0, 
+         cantidad:0, 
+         descontinuado:0, 
+         fecha_baja:""
+  }
 
   constructor(private productoService: ProductoService, private messageService: MessageService, private confirmService: ConfirmationService){
 
@@ -52,7 +66,8 @@ export class ProductoComponent implements OnInit{
   save(){
     this.productoService.save(this.producto).subscribe(
       (result: any) => {
-        let producto =result as Producto
+        let producto =result as Producto;
+        this.validarProducto(producto);
         this.productos.push(producto);
         this.messageService.add({severity: 'success', summary: "Resultado", detail:"Se guardó correctamente"})
         console.log(result);
@@ -79,7 +94,8 @@ export class ProductoComponent implements OnInit{
         },
         {
           label: "Editar",
-          icon: "pi pi-fw pi-pencil"
+          icon: "pi pi-fw pi-pencil",
+          command: () => this.showSaveDialog(true)
         },
         {
           label: "Eliminar", 
@@ -88,7 +104,28 @@ export class ProductoComponent implements OnInit{
       ];
   }
   showSaveDialog(editar: boolean) {
-    this.displaySaveDialog= true;
+    if (editar) {
+      if (this.selectedProducto != null && this.selectedProducto.sku != 0) {
+        this.producto = this.selectedProducto;
+      }else{
+        this.messageService.add({severity : 'warn', summary: "Advertencia!", detail: "Por favor seleccione un registro"});
+        return;
+      }
+    } else {
+      this.producto = new Producto();
+    }
+    this.displaySaveDialog = true;
+  }
+  validarProducto(producto: Producto){
+    let index = this.productos.findIndex((e) => e.sku == producto.sku);
+
+    if(index != -1){
+      this.productos[index] = producto;
+    }else{
+      this.productos.push(producto);
+
+    }
+
   }
   
 }
