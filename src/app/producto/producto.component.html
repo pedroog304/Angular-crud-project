@@ -69,7 +69,8 @@
                 <label for="departamento">Departamento</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="departamento" [(ngModel)]="producto.departamento"  required type="number" />
+                <p-dropdown [options]="departamentos" [(ngModel)]="producto.departamento" optionLabel="nombre" optionValue="id" (ngModelChange)="onDepartamentoChange()">
+                </p-dropdown>
             </div>
         </div>
         <div class="ui-g-12">
@@ -77,7 +78,8 @@
                 <label for="clase">Clase</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="clase" [(ngModel)]="producto.clase" required type="number"/>
+                <p-dropdown [options]="clases" [(ngModel)]="producto.clase" optionLabel="nombre" optionValue="id" (ngModelChange)="onClaseChange()">
+                </p-dropdown>
             </div>
         </div>
         <div class="ui-g-12">
@@ -85,7 +87,7 @@
                 <label for="familia">Familia</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="familia" [(ngModel)]="producto.familia" required type="number"/>
+                <p-dropdown [options]="familias" [(ngModel)]="producto.familia" optionLabel="nombre" optionValue="id"></p-dropdown>
             </div>
         </div>
         <div class="ui-g-12">

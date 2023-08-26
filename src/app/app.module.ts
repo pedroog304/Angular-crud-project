@@ -18,6 +18,8 @@ import { MessageService } from 'primeng/api';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api'
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     ButtonModule,
     ToastModule,
     ConfirmDialogModule,
-    SelectButtonModule
+    SelectButtonModule,
+    DropdownModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]

@@ -1,8 +1,7 @@
-export class Departamento{
+export class Familia{
     constructor(public numero:number = 0, 
         public nombre:string = "",
-        public clase_numero:number =0,
-        public departamento_numero:number =0){
+        public clase:number =0){
 
     }
 }

@@ -3,6 +3,12 @@ import { Producto } from 'src/model/producto';
 import { ProductoService } from '../service/producto.service';
 import { MenuItem } from 'primeng/api/menuitem';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Departamento } from 'src/model/departamento';
+import { Clase } from 'src/model/clase';
+import { Familia } from 'src/model/familia';
+import { DepartamentoService } from '../service/departamento.service';
+import { ClaseService } from '../service/clase.service';
+import { FamiliaService } from '../service/familia.service';
 
 @Component({
   selector: 'app-producto',
@@ -19,6 +25,19 @@ export class ProductoComponent implements OnInit{
   existOptions: boolean =false;
   showDescontinuado:boolean=false;
   showTable:boolean = false;
+  departamentos: Departamento[]=[];
+  clases: Clase[]=[];
+  familias: Familia[]=[];
+
+  selectedDepartamento: Departamento={
+    numero:0,
+    nombre:""
+  }
+  selectedClase: Clase ={
+    numero:0,
+    nombre:"",
+    departamento:0
+  }
   producto: Producto={
     sku:0, 
          articulo:"", 
@@ -48,7 +67,8 @@ export class ProductoComponent implements OnInit{
          fecha_baja:""
   }
 
-  constructor(private productoService: ProductoService, private messageService: MessageService, private confirmService: ConfirmationService){
+  constructor(private productoService: ProductoService, private messageService: MessageService, private confirmService: ConfirmationService,private departamentoService: DepartamentoService,
+    private claseService: ClaseService, private familiaService: FamiliaService){
 
   }
   getAll() {
@@ -145,6 +165,9 @@ export class ProductoComponent implements OnInit{
           command: () => this.delete()
         }
       ];
+      this.departamentoService.getAll().subscribe((departamentos) => {
+        this.departamentos = departamentos;
+      });
   }
   showSaveDialog(editar: boolean) {
     if (editar) {
@@ -186,6 +209,33 @@ export class ProductoComponent implements OnInit{
       this.productos = productos;
     }
 
+  }
+  onDepartamentoChange():void {
+    this.clases =[];
+    this.familias= [];
+    this.claseService.getAll().subscribe((result) => {
+      let clases: Clase[] = [];
+      for (let i = 0; i < result.length; i++) {
+        let clase = result[i] as Clase;
+        if(clase.departamento == this.producto.departamento){
+        clases.push(clase);
+        }
+      }
+      this.clases = clases;
+    });
+  }
+  onClaseChange():void {
+    this.familias =[];
+    this.familiaService.getAll().subscribe((result) => {
+      let familias: Familia[] = [];
+      for (let i = 0; i < result.length; i++) {
+        let familia = result[i] as Familia;
+        if(familia.clase == this.producto.clase ){
+        familias.push(familia);
+        }
+      }
+      this.familias = familias;
+    });
   }
   
 }
