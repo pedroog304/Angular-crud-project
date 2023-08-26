@@ -15,6 +15,10 @@ export class ProductoComponent implements OnInit{
   cols: any[]= [];
   items: MenuItem[]=[];
   displaySaveDialog: boolean =false;
+  searchSkuDialog: boolean =false;
+  existOptions: boolean =false;
+  showDescontinuado:boolean=false;
+  showTable:boolean = false;
   producto: Producto={
     sku:0, 
          articulo:"", 
@@ -62,6 +66,20 @@ export class ProductoComponent implements OnInit{
       }
     );
   }
+  showDetail(){
+    this.productoService.getById(this.selectedProducto.sku).subscribe(
+      (result: any) => {
+        let productos: Producto[] = [];
+          let producto = result as Producto;
+          productos.push(producto);
+        this.productos = productos;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    this.existOptions=false;
+  }
 
   save(){
     this.productoService.save(this.producto).subscribe(
@@ -92,6 +110,7 @@ export class ProductoComponent implements OnInit{
           (result:any) =>{
             this.messageService.add({ severity: 'success', summary: "Resultado", detail: "Se eliminó el producto con sku "+result.sku+" correctamente." });
             this.deleteObject(result.sku);
+            this.existOptions=false;
           }
         )
       }
@@ -131,6 +150,8 @@ export class ProductoComponent implements OnInit{
     if (editar) {
       if (this.selectedProducto != null && this.selectedProducto.sku != 0) {
         this.producto = this.selectedProducto;
+        this.existOptions=false;
+        this.showDescontinuado =true;
       }else{
         this.messageService.add({severity : 'warn', summary: "Advertencia!", detail: "Por favor seleccione un registro"});
         return;
@@ -140,6 +161,21 @@ export class ProductoComponent implements OnInit{
     }
     this.displaySaveDialog = true;
   }
+  showSearchDialog() {
+    this.searchSkuDialog = true;
+    }
+    showOptions(){
+      this.getAll();
+      let index = this.productos.findIndex((e) => e.sku == this.selectedProducto.sku);
+      this.searchSkuDialog=false;
+      if(index != -1){
+        this.selectedProducto = this.productos[index];
+        this.existOptions=true;
+      }else{
+        this.producto.sku= this.selectedProducto.sku;
+        this.displaySaveDialog=true;
+      }
+    }
   validarProducto(producto: Producto){
     let index = this.productos.findIndex((e) => e.sku == producto.sku);
     let productos = this.productos;

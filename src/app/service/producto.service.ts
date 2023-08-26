@@ -14,6 +14,9 @@ export class ProductoService {
   getAll() : Observable<any>{
     return this.http.get(this.baseUrl + "/all");
   }
+  getById(id:number) : Observable<any>{
+    return this.http.get(this.baseUrl + "/find/"+id);
+  }
   save(producto: Producto): Observable<any>{
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');

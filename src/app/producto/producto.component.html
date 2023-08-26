@@ -5,7 +5,12 @@
     <div style="margin-bottom: 20px">
         <p-menubar [model]="items"></p-menubar>
     </div>
-<p-table [value]="productos" [columns]="cols" [responsive]="true" selectionMode="single" [(selection)]="selectedProducto"dataKey="sku" [paginator]="true" [rows]="15">
+    <div style="margin-bottom: 20px">
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="pi pi-check" (click)="showSearchDialog()" label="Ingresar Sku"></button>
+        </div>
+    </div>
+<p-table [value]="productos" [columns]="cols" [responsive]="true" selectionMode="single" [(selection)]="selectedProducto"dataKey="sku" [paginator]="true" [rows]="15" [globalFilterFields]="['sku']">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -23,6 +28,7 @@
             </ng-template>
         </p-table>
     </p-panel>
+    <!-- DIALOG PARA REGISTRAR UN PRODUCTO-->
     <p-dialog  header="Producto" [responsive]="true" [style]="{width: '400px'}" [(visible)]="displaySaveDialog"
     [modal]="true">
     <div class="ui-g ui-fluid">
@@ -31,7 +37,7 @@
                 <label for="sku">SKU</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="sku" [(ngModel)]="producto.sku" />
+                <input pInputText id="sku" [(ngModel)]="producto.sku" [disabled]="true" />
             </div>
         </div>
         <div class="ui-g-12">
@@ -39,7 +45,7 @@
                 <label for="articulo">Articulo</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="articulo" [(ngModel)]="producto.articulo" />
+                <input pInputText id="articulo" [(ngModel)]="producto.articulo" required type="text"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -47,7 +53,7 @@
                 <label for="marca">Marca</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="marca" [(ngModel)]="producto.marca" />
+                <input pInputText id="marca" [(ngModel)]="producto.marca" required type="text"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -55,7 +61,7 @@
                 <label for="modelo">Modelo</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="modelo" [(ngModel)]="producto.modelo" />
+                <input pInputText id="modelo" [(ngModel)]="producto.modelo" required type="text"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -63,7 +69,7 @@
                 <label for="departamento">Departamento</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="departamento" [(ngModel)]="producto.departamento" />
+                <input pInputText id="departamento" [(ngModel)]="producto.departamento"  required type="number" />
             </div>
         </div>
         <div class="ui-g-12">
@@ -71,7 +77,7 @@
                 <label for="clase">Clase</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="clase" [(ngModel)]="producto.clase" />
+                <input pInputText id="clase" [(ngModel)]="producto.clase" required type="number"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -79,7 +85,7 @@
                 <label for="familia">Familia</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="familia" [(ngModel)]="producto.familia" />
+                <input pInputText id="familia" [(ngModel)]="producto.familia" required type="number"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -87,7 +93,7 @@
                 <label for="stock">Stock</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="stock" [(ngModel)]="producto.stock" />
+                <input pInputText id="stock" [(ngModel)]="producto.stock" required type="number"/>
             </div>
         </div>
         <div class="ui-g-12">
@@ -95,8 +101,15 @@
                 <label for="cantidad">Cantidad</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="cantidad" [(ngModel)]="producto.cantidad" />
+                <input pInputText id="cantidad" [(ngModel)]="producto.cantidad" required type="number"/>
             </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="cantidad">Descontinuado</label>
+            </div>
+            <div class="ui-g-8">
+                <p-selectButton [options]="[{label: 'No', value: '0'}, {label: 'Si', value: '1'}]" [(ngModel)]="producto.descontinuado" optionLabel="label" optionValue="value" [disabled]="!showDescontinuado"></p-selectButton>            </div>
         </div>
     </div>
     <p-footer>
@@ -104,5 +117,40 @@
             <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar"></button>
         </div>
     </p-footer>
+    </p-dialog>
+    <!-- DIALOG PARA INGRESAR UN SKU-->
+    <p-dialog  header="Ingresar SKU" [responsive]="true" [style]="{width: '400px'}" [(visible)]="searchSkuDialog"
+    [modal]="true">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+                <label for="sku">SKU</label>
+            </div>
+            <div class="ui-g-8">
+                <input type="number" min="0" pInputText id="sku" [(ngModel)]="selectedProducto.sku" value="" />
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="pi pi-check" (click)="showOptions()" label="Seleccionar"></button>
+        </div>
+    </p-footer>
+<!-- DIALOG PARA EDITAR O ELIMINAR UN PRODUCTO-->
+    </p-dialog>
+    <p-dialog  header="Selecciona una opcion" [responsive]="true" [style]="{width: '400px'}" [(visible)]="existOptions"
+    [modal]="true">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-8">
+                <label id="sku">Producto existente</label> 
+            </div>
+            <div class="ui-g-4">
+                <p-button label="Ver detalle" styleClass="p-button-help" (click)="showDetail()"></p-button>
+                <p-button label="Editar" styleClass="p-button-warning" (click)="showSaveDialog(true)"></p-button>
+                <p-button label="Eliminar" styleClass="p-button-danger" (click)="delete()"></p-button>
+            </div>
+        </div>
+    </div>
     </p-dialog>
 </div>
