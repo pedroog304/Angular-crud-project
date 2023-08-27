@@ -1,16 +1,13 @@
 <div class="ui-g">
     <p-toast></p-toast>
     <p-confirmDialog header="Confirmación" acceptLabel="Si" rejectLabel="No" icon="pi pi-exclamation-triangle"></p-confirmDialog>
-    <p-panel header="Administración de Productos" [style]="{width: '70%', margin: '0 auto'}">
-    <div style="margin-bottom: 20px">
-        <p-menubar [model]="items"></p-menubar>
-    </div>
+    <p-panel header="Administración de Productos" [style]="{width: '80%', margin: '0 auto'}">
     <div style="margin-bottom: 20px">
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="pi pi-check" (click)="showSearchDialog()" label="Ingresar Sku"></button>
+            <button type="button" pButton icon="pi pi-fw pi-plus" (click)="showSearchDialog()" label="Ingresar Sku" [style]="{width: '100%'}"></button>
         </div>
     </div>
-<p-table [value]="productos" [columns]="cols" [responsive]="true" selectionMode="single" [(selection)]="selectedProducto"dataKey="sku" [paginator]="true" [rows]="15" [globalFilterFields]="['sku']">
+<p-table [value]="productos" [columns]="cols" [responsive]="true" dataKey="sku" [paginator]="true" [rows]="15" [globalFilterFields]="['sku']">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -28,6 +25,10 @@
             </ng-template>
         </p-table>
     </p-panel>
+
+
+
+
     <!-- DIALOG PARA REGISTRAR UN PRODUCTO-->
     <p-dialog  header="Producto" [responsive]="true" [style]="{width: '400px'}" [(visible)]="displaySaveDialog"
     [modal]="true">
@@ -69,7 +70,7 @@
                 <label for="departamento">Departamento</label>
             </div>
             <div class="ui-g-8">
-                <p-dropdown [options]="departamentos" [(ngModel)]="producto.departamento" optionLabel="nombre" optionValue="id" (ngModelChange)="onDepartamentoChange()">
+                <p-dropdown [options]="departamentos"  [(ngModel)]="producto.departamento" optionLabel="nombre" optionValue="id" (ngModelChange)="onDepartamentoChange()">
                 </p-dropdown>
             </div>
         </div>
@@ -103,23 +104,30 @@
                 <label for="cantidad">Cantidad</label>
             </div>
             <div class="ui-g-8">
-                <input pInputText id="cantidad" [(ngModel)]="producto.cantidad" required type="number"/>
+                <p-inputNumber  id="cantidad" [(ngModel)]="producto.cantidad" [min]="producto.stock"></p-inputNumber>
             </div>
+            <div *ngIf="producto.cantidad > producto.stock" class="error-message">
+                La cantidad no puede ser mayor al stock.
+              </div>
         </div>
         <div class="ui-g-12">
             <div class="ui-g-4">
                 <label for="cantidad">Descontinuado</label>
             </div>
             <div class="ui-g-8">
-                <p-selectButton [options]="[{label: 'No', value: '0'}, {label: 'Si', value: '1'}]" [(ngModel)]="producto.descontinuado" optionLabel="label" optionValue="value" [disabled]="!showDescontinuado"></p-selectButton>            </div>
+                <p-selectButton [options]="[{label: 'No', value: 0}, {label: 'Si', value: 1}]" [(ngModel)]="producto.descontinuado" optionLabel="label" optionValue="value" [disabled]="!showDescontinuado"></p-selectButton>            </div>
         </div>
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar"></button>
+            <button [disabled]="producto.cantidad > producto.stock" type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar"></button>
         </div>
     </p-footer>
     </p-dialog>
+
+
+
+
     <!-- DIALOG PARA INGRESAR UN SKU-->
     <p-dialog  header="Ingresar SKU" [responsive]="true" [style]="{width: '400px'}" [(visible)]="searchSkuDialog"
     [modal]="true">
@@ -129,7 +137,8 @@
                 <label for="sku">SKU</label>
             </div>
             <div class="ui-g-8">
-                <input type="number" min="0" pInputText id="sku" [(ngModel)]="selectedProducto.sku" value="" />
+                <p-inputNumber [(ngModel)]="selectedProducto.sku" inputId="minmax" inputId="minmax" mode="decimal" [min]="1" [max]="1000"> </p-inputNumber>
+
             </div>
         </div>
     </div>
@@ -138,6 +147,12 @@
             <button type="button" pButton icon="pi pi-check" (click)="showOptions()" label="Seleccionar"></button>
         </div>
     </p-footer>
+
+
+
+
+
+
 <!-- DIALOG PARA EDITAR O ELIMINAR UN PRODUCTO-->
     </p-dialog>
     <p-dialog  header="Selecciona una opcion" [responsive]="true" [style]="{width: '400px'}" [(visible)]="existOptions"

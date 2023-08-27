@@ -19,7 +19,6 @@ export class ProductoComponent implements OnInit{
 
   productos: Producto[] = [];
   cols: any[]= [];
-  items: MenuItem[]=[];
   displaySaveDialog: boolean =false;
   searchSkuDialog: boolean =false;
   existOptions: boolean =false;
@@ -29,21 +28,12 @@ export class ProductoComponent implements OnInit{
   clases: Clase[]=[];
   familias: Familia[]=[];
 
-  selectedDepartamento: Departamento={
-    numero:0,
-    nombre:""
-  }
-  selectedClase: Clase ={
-    numero:0,
-    nombre:"",
-    departamento:0
-  }
   producto: Producto={
     sku:0, 
          articulo:"", 
          marca:"", 
          modelo:"", 
-         departamento: 0,
+         departamento: 1,
          clase:0,
          familia:0, 
          fecha_alta:"01-01-2023", 
@@ -146,24 +136,16 @@ export class ProductoComponent implements OnInit{
       this.cols = [
         { field: "sku", header: "SKU" },
         { field: "articulo", header: "Nombre" },
-        { field: "marca", header: "Marca" }
-      ];
-      this.items = [
-        {
-          label: "Nuevo",
-          icon: 'pi pi-fw pi-plus',
-          command: () => this.showSaveDialog(false)
-        },
-        {
-          label: "Editar",
-          icon: "pi pi-fw pi-pencil",
-          command: () => this.showSaveDialog(true)
-        },
-        {
-          label: "Eliminar", 
-          icon: "pi pi-fw pi-times",
-          command: () => this.delete()
-        }
+        { field: "marca", header: "Marca" },
+        { field: "modelo", header: "Modelo" },
+        { field: "departamento", header: "Departamento" },
+        { field: "clase", header: "Clase" },
+        { field: "familia", header: "Familia" },
+        { field: "fecha_alta", header: "Fecha alta" },
+        { field: "stock", header: "Stock" },
+        { field: "cantidad", header: "Cantidad" },
+        { field: "descontinuado", header: "Descontinuado" },
+        { field: "fecha_baja", header: "Fecha baja" }
       ];
       this.departamentoService.getAll().subscribe((departamentos) => {
         this.departamentos = departamentos;
@@ -175,6 +157,8 @@ export class ProductoComponent implements OnInit{
         this.producto = this.selectedProducto;
         this.existOptions=false;
         this.showDescontinuado =true;
+        this.onDepartamentoChange();
+        this.onClaseChange();
       }else{
         this.messageService.add({severity : 'warn', summary: "Advertencia!", detail: "Por favor seleccione un registro"});
         return;
